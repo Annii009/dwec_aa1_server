@@ -1,88 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestor de contraseñas</title>
-  <link rel="stylesheet" href="/style.css">
-  <script src="/index.js" defer></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de contraseñas</title>
+    <link rel="stylesheet" href="/style.css"> 
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script> 
+    <script src="/index.js" defer></script>
 </head>
 
 <body>
-  <header>
-    <h1>Pass saver</h1>
-    <button id="btn-show-add-category">Add Categorie</button>
-  </header>
+    <header>
+        <h1>Servidor de contraseñas</h1>
+        
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Buscar sitio o categoría...">
+            <i data-lucide="search" class="search-icon"></i>
+        </div>
+        
+        <button id="btn-show-add-category">Añadir categorías</button>
+    </header>
 
-  <main>
-    <section id="categories-container">
-      <h2>Categories</h2>
-      <ul id="categories-list">
-      </ul>
-    </section>
+    <main>
+        <section id="categories-container">
+            <h2>Categorías</h2>
+            <ul id="categories-list">
+                </ul>
+        </section>
 
-    <section id="sites-container">
-      <div class="sites-header">
-        <h2>Sites</h2>
-        <button id="btn-show-add-site" disabled>Add site</button>
-      </div>
+        <section id="sites-container">
+            <div class="sites-header">
+                <h2>Sitios</h2>
+                <button id="btn-show-add-site" disabled>Añadir sitios</button>
+            </div>
 
-      <table id="sites-table" style="display:none;">
-        <thead>
-          <tr>
-            <th>Sitio</th>
-            <th>User</th>
-            <th>Created at</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="sites-list"></tbody>
-      </table>
-      <p id="sites-placeholder">Selecciona una categoría para ver sus sites.</p>
-    </section>
-  </main>
+            <table id="sites-table" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>Sitio</th>
+                        <th>Usuario</th>
+                        <th>Creado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="sites-list">
+                    </tbody>
+            </table>
+            <p id="sites-placeholder">Selecciona una categoría para ver sus sitios.</p>
+        </section>
+    </main>
 
-  <dialog id="category-modal">
-    <form id="form-add-category">
-      <h3>Nueva categoría</h3>
-      <label for="new-category-name">Nombre</label>
-      <input type="text" id="new-category-name" required>
-      <hr>
-      <button type="button" id="btn-cancel-category">Cancel</button>
-      <button type="submit">OK</button>
-    </form>
-  </dialog>
+    <dialog id="category-modal">
+        <form id="form-add-category">
+            <h3>Nueva categoría</h3>
+            
+            <div>
+                <label for="new-category-name">Nombre</label>
+                <input type="text" id="new-category-name" required data-minlength="3">
+            </div>
 
-  <dialog id="site-modal">
-    <form id="form-add-site">
-      <h3>Añadir nuevo site</h3>
-      <div>
-        <label for="new-site-name">Nombre</label>
-        <input type="text" id="new-site-name" required>
-      </div>
-      <div>
-        <label for="new-site-user">Usuario</label>
-        <input type="text" id="new-site-user" required>
-      </div>
-      <div>
-        <label for="new-site-pass">Contraseña</label>
-        <input type="password" id="new-site-pass" required>
-      </div>
-      <div>
-        <label for="new-site-url">URL</label>
-        <input type="text" id="new-site-url">
-      </div>
-      <div>
-        <label for="new-site-desc">Descripción</label>
-        <textarea id="new-site-desc"></textarea>
-      </div>
-      <hr>
-      <button type="button" id="btn-cancel-site">Cancel</button>
-      <button type="submit">OK</button>
-    </form>
-  </dialog>
+            <div>
+                <label for="new-category-icon">Ícono (ej: folder, shield)</label>
+                <input type="text" id="new-category-icon" placeholder="Nombre de ícono de Lucide">
+            </div>
+
+            <hr>
+            <button type="button" id="btn-cancel-category">Cancelar</button>
+            <button type="submit">OK</button>
+        </form>
+    </dialog>
+
+    <dialog id="site-modal">
+        <form id="form-add-site">
+            <h3>Añadir nuevo sitio</h3>
+            
+            <div>
+                <label for="new-site-name">Nombre</label>
+                <input type="text" id="new-site-name" required data-minlength="3">
+            </div>
+            <div>
+                <label for="new-site-user">Usuario</label>
+                <input type="text" id="new-site-user" required data-minlength="3">
+            </div>
+            
+            <div class="password-group">
+                <label for="new-site-pass">Contraseña</label>
+                <input type="password" id="new-site-pass" required data-minlength="8">
+                
+                <button type="button" id="btn-generate-pass" title="Generar Contraseña Segura">
+                    <i data-lucide="key"></i> Generar
+                </button>
+            </div>
+            
+            <div>
+                <label for="new-site-url">URL</label>
+                <input type="text" id="new-site-url">
+            </div>
+            <div>
+                <label for="new-site-desc">Descripción</label>
+                <textarea id="new-site-desc"></textarea>
+            </div>
+            <hr>
+            <button type="button" id="btn-cancel-site">Cancelar</button>
+            <button type="submit">OK</button>
+        </form>
+    </dialog>
 </body>
 
 </html>

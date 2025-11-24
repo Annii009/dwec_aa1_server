@@ -1,7 +1,9 @@
 const API_URL = "http://localhost:3000"
 
+
 //vriable para almacenar la categoria
 let categoriaActual = null
+
 
 //elementos de categorias
 const listaCategorias = document.getElementById('categories-list')
@@ -10,6 +12,7 @@ const modalCategoria = document.getElementById('category-modal')
 const formCategoria = document.getElementById('form-add-category')
 const inputNombreCategoria = document.getElementById('new-category-name')
 const btnCancelarCategoria = document.getElementById('btn-cancel-category')
+
 
 //elementos e sites
 const tablaSites = document.getElementById('sites-table')
@@ -26,6 +29,10 @@ const inputUsuarioSite = document.getElementById('new-site-user')
 const inputPasswordSite = document.getElementById('new-site-pass')
 const inputUrlSite = document.getElementById('new-site-url')
 const inputDescripcionSite = document.getElementById('new-site-desc')
+const inputBuscador = document.getElementById('search-input')
+const btnGenerarPass = document.getElementById('btn-generate-pass')
+const inputIconoCategoria = document.getElementById('new-category-icon')
+
 
 //funciones de categorias
 //obtener todas las categorias
@@ -85,6 +92,7 @@ async function guardarCategoria(evento) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ name: nombre })
+        
     })
     if (res.ok) {
         modalCategoria.close()
@@ -279,5 +287,73 @@ cuerpoTablaSites.addEventListener('click', (evento) => {
         const fila = boton.closest('tr')
         const id = fila.dataset.id
         eliminarSite(id)
+    }
+})
+
+
+//generar contraseñas aleatorias
+function generarContrasenaSegura(longitud = 12) {
+    const mayusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    const minusculas = "abcdefghijklmnopqrstuvwxyz"
+    const numeros = "0123456789"
+    const simbolos = "!@#$%^&*()_+{}[]<>?/|=-"
+
+    const todo = mayusculas + minusculas + numeros + simbolos
+
+    let password = ""
+
+    // hace que haya uno de cadfa tipo
+    password += mayusculas[Math.floor(Math.random() * mayusculas.length)]
+    password += minusculas[Math.floor(Math.random() * minusculas.length)]
+    password += numeros[Math.floor(Math.random() * numeros.length)]
+    password += simbolos[Math.floor(Math.random() * simbolos.length)]
+
+    //completa la longutud que quieres de la contraseña
+    for (let i = password.length; i < longitud; i++) {
+        password += todo[Math.floor(Math.random() * todo.length)]
+    }
+
+    // Mezclar al azar el resultado
+    return password.split('').sort(() => Math.random() - 0.5).join('')
+}
+
+//te la genera y te la pone en el input
+btnGenerarPass.addEventListener('click', () => {
+    const pass = generarContrasenaSegura(8)
+    inputPasswordSite.value = pass
+})
+
+
+//buscador por categorias
+function filtrarCategorias(texto) {
+    const textoLower = texto.toLowerCase()
+
+    listaCategorias.querySelectorAll('li').forEach(li => {
+        const nombreCategoria = li.querySelector('.category-name').textContent.toLowerCase()
+
+        li.style.display = nombreCategoria.includes(textoLower) ? 'flex' : 'none'
+    })
+}
+
+
+function filtrarSitios(texto) {
+    const textoLower = texto.toLowerCase()
+
+    cuerpoTablaSites.querySelectorAll('tr').forEach(tr => {
+        const columnas = Array.from(tr.children).map(td => td.textContent.toLowerCase())
+        const coincide = columnas.some(col => col.includes(textoLower))
+
+        tr.style.display = coincide ? '' : 'none'
+    })
+}
+
+
+inputBuscador.addEventListener('input', () => {
+    const texto = inputBuscador.value.trim()
+
+    filtrarCategorias(texto)
+
+    if (categoriaActual) {
+        filtrarSitios(texto)
     }
 })
