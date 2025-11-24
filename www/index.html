@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/style.css"> 
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script> 
     <script src="/index.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -39,6 +40,7 @@
             <table id="sites-table" style="display:none;">
                 <thead>
                     <tr>
+                        <th>Url</th>
                         <th>Sitio</th>
                         <th>Usuario</th>
                         <th>Creado</th>
@@ -58,15 +60,14 @@
             
             <div>
                 <label for="new-category-name">Nombre</label>
-                <input type="text" id="new-category-name" required data-minlength="3">
+                <input type="text" id="new-category-name" required data-minlength="3" placeholder="Nombre">
             </div>
 
             <div>
-                <label for="new-category-icon">Ícono (ej: folder, shield)</label>
-                <input type="text" id="new-category-icon" placeholder="Nombre de ícono de Lucide">
+                <label for="new-category-icon">Ícono</label>
+                <input type="text" id="new-category-icon" placeholder="Nombre de ícono">
             </div>
-
-            <hr>
+            <br>
             <button type="button" id="btn-cancel-category">Cancelar</button>
             <button type="submit">OK</button>
         </form>
@@ -78,16 +79,16 @@
             
             <div>
                 <label for="new-site-name">Nombre</label>
-                <input type="text" id="new-site-name" required data-minlength="3">
+                <input type="text" id="new-site-name" required data-minlength="3" placeholder="Nombre">
             </div>
             <div>
                 <label for="new-site-user">Usuario</label>
-                <input type="text" id="new-site-user" required data-minlength="3">
+                <input type="text" id="new-site-user" required data-minlength="3" placeholder="Usuario">
             </div>
             
             <div class="password-group">
                 <label for="new-site-pass">Contraseña</label>
-                <input type="password" id="new-site-pass" required data-minlength="8">
+                <input type="password" id="new-site-pass" required data-minlength="8" placeholder="Contraseña">
                 
                 <button type="button" id="btn-generate-pass" title="Generar Contraseña Segura">
                     <i data-lucide="key"></i> Generar
@@ -96,13 +97,13 @@
             
             <div>
                 <label for="new-site-url">URL</label>
-                <input type="text" id="new-site-url">
+                <input type="text" id="new-site-url" placeholder="URL">
             </div>
             <div>
                 <label for="new-site-desc">Descripción</label>
-                <textarea id="new-site-desc"></textarea>
+                <textarea id="new-site-desc" placeholder="Descripción"></textarea>
             </div>
-            <hr>
+            <br>
             <button type="button" id="btn-cancel-site">Cancelar</button>
             <button type="submit">OK</button>
         </form>

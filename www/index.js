@@ -105,16 +105,35 @@ async function guardarCategoria(evento) {
 
 //eliminar categoria
 async function eliminarCategoria(id) {
-    if (!confirm("¿Estás seguro de que deseas eliminar esta categoría?")) {
-        return
-    }
-    const res = await fetch(`${API_URL}/categories/${id}`, {
-        method: 'DELETE'
+    const resultado = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: "¡No podrás revertir esto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminarla!",
+        cancelButtonText: "Cancelar"
     })
-    if (res.ok) {
-        cargarCategoria()
-    } else {
-        alert("Error al eliminar la categoría.")
+
+    if (resultado.isConfirmed){
+        const res = await fetch(`${API_URL}/categories/${id}`, {
+            method: 'DELETE'
+        })
+        if (res.ok){
+            Swal.fire({
+                title: "¡Eliminada!",
+                text: "La categoría ha sido eliminada.",
+                icon: "success",
+            })
+            cargarCategoria()
+        } else {
+            Swal.fire({
+                title: "Error",
+                text: "No se pudo eliminar la categoría.",
+                icon: "error"
+            })
+        }
     }
 }
 
@@ -175,16 +194,12 @@ function mostrarSites(sites) {
         const fecha = new Date(site.createdAt).toLocaleDateString()
 
         tr.innerHTML = `
+            <td>${site.url}</td>
             <td>${site.name}</td>
             <td>${site.user}</td>
             <td>${fecha}</td>
             <td>
             <button class="action-btn view-btn" title="Ver URL">
-                    <i data-lucide="eye"></i>
-                </button>
-                <button class="action-btn edit-btn" title="Editar">
-                    <i data-lucide="pencil"></i>
-                </button>
                 <button class="action-btn delete-site-btn" title="Eliminar">
                     <i data-lucide="trash-2"></i>
                 </button>
@@ -237,18 +252,36 @@ async function guardarSite(evento) {
 
 //eliminar site
 async function eliminarSite(id) {
-    if (!confirm("¿Estás seguro de que deseas eliminar este site?")) {
-        return
-    }
+    const result = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: "¡No podrás revertir esto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminarlo!",
+        cancelButtonText: "Cancelar"
+    });
 
-    const res = await fetch(`${API_URL}/sites/${id}`, {
-        method: 'DELETE'
-    })
+    if (result.isConfirmed) {
+        const res = await fetch(`${API_URL}/sites/${id}`, {
+            method: 'DELETE'
+        })
 
-    if (res.ok) {
-        cargarSites(categoriaActual)
-    } else {
-        alert("Error al eliminar.")
+        if (res.ok){
+            Swal.fire({
+                title: "¡Eliminado!",
+                text: "El site ha sido eliminado.",
+                icon: "success",
+            })
+            cargarSites(categoriaActual)
+        } else {
+            Swal.fire({
+                title: "Error",
+                text: "No se pudo eliminar el site.",
+                icon: "error"
+            })
+        }
     }
 }
 
